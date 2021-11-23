@@ -1,1 +1,15 @@
-# javascript-quiz
+# JavaScript Quiz
+
+## Purpose
+A timed quiz on JavaScript concepts to test your knowledge and compare high scores.
+
+## Built With
+* HTML
+* CSS
+* JavaScript
+
+## Website
+https://nicavulcan.github.io/javascript-quiz/
+
+## Contribution
+Created by CSM

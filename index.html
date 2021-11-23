@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Quiz</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body>
+    <header>
+        <!-- insert link to high scores page -->
+        <a href="">View High Scores</a>
+        <p id="timer"></p>
+    </header>
+    <main>
+        <!-- main page - start quiz prompt -->
+        <section id="start-quiz">
+            <h1>JavaScript Quiz</h1>
+            <p>
+                You have 100 seconds to answer 10 questions regarding JavaScript concepts. Any incorrect guesses will
+                detract 10 seconds from your remaining time. Good luck!
+            </p>
+            <button id="begin">BEGIN!</button>
+        </section>
+        <!-- questions page-->
+        <section id="question-page" status="hidden">
+            <h1 id="question"></h1>
+            <ul id="answer-choices">
+                <li class="choiceOne"></li>
+                <li class="choiceTwo"></li>
+                <li class="choiceThree"></li>
+                <li class="choiceFour"></li>
+            </ul>
+            <p id="prev-answer"></p>
+        </section>
+        <!-- game over page -->
+        <section id="game-over">
+            <h1>Game Over!</h1>
+            <form id="enter-score">
+                <p id="your-score"></p>
+                <input type="text" name="initials" id="initials">
+                <button id="submit-score">Submit!</button>
+            </form>
+        </section>
+    </main>
+    <script src="./assets/js/script.js"></script>
+</body>
+
+</html>
