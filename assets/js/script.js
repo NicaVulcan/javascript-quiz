@@ -6,42 +6,43 @@ var gameOverEl = document.querySelector("#game-over");
 var btnBeginQuiz = mainPageEl.querySelector("#begin");
 var questionHeading = questionPageEl.querySelector("#question");
 var answerChoiceList = questionPageEl.querySelector("#answer-choices");
+var choiceA = questionPageEl.querySelector("#choice-a")
+var choiceB = questionPageEl.querySelector("#choice-b")
+var choiceC = questionPageEl.querySelector("#choice-c")
+var choiceD = questionPageEl.querySelector("#choice-d")
 var qIndex = 0;
 
 // Questions array
 var questions = [
     {
-        question: "question 1",
-        answerChoices: ["I'm", "on a", "highway", "to hell"],
-        answerCorrect: "to hell"
+        question: "What is the correct JavaScript syntax to write 'Hello World'?",
+        answerChoices: ["System.out.println('Hello World')", "println ('Hello World')", "document.write('Hello World')", "response.write('Hello World')"],
+        answerCorrect: 2
     },
     {
-        question: "question 2",
-        answerChoices: ["for those", "about to", "rock", "we salute you"],
-        answerOne: "for those",
-        answerTwo: "about to",
-        answerThree: "rock",
-        answerCorrect: "we salute you"
+        question: "Inside which HTML element do we put the JavaScript?",
+        answerChoices: ["<js>", "<scripting>", "<javascript>", "<script>"],
+        answerCorrect: 3
     },
     {
-        question: "question 3",
-        answerChoices: ["you", "shook me", "all night", "long"],
-        answerCorrect: "long"
+        question: "Which of the following best describes JavaScript?",
+        answerChoices: ["an object-oriented scripting language.", "a low-level programming language.", "a scripting language precompiled in the browser.", "a compiled scripting language."],
+        answerCorrect: 0
     },
     {
-        question: "question 4",
-        answerChoices: ["TNT I'm dynamyte", "TNT and I'll win the fight", "TNT I'm a powerload", "TNT watch me explode"],
-        answerCorrect: "TNT watch me explode"
+        question: "Using _____ statements is how you test for specific conditions.",
+        answerChoices: ["Select", "If", "Switch", "For"],
+        answerCorrect: 1
     },
     {
-        question: "question 5",
-        answerChoices: ["let there be lignt", "sound", "drums, guitar", "let there be rock"],
-        answerCorrect: "let there be rock"
+        question: "What is meant by 'this' keyword in javascript?",
+        answerChoices: ["It referes previous object", "It is variable which contains value", "It refers current object", "None of the above"],
+        answerCorrect: 2
     },
     {
-        question: "question 6",
-        answerChoices: ["dirty deeds", "done", "dirt", "cheap"],
-        answerCorrect: "cheap"
+        question: "What would appear on the console if you were to type the following: 2 + 5 + '8'",
+        answerChoices: ["78", "278", "7 + '8'", "15"],
+        answerCorrect: 0
     },
 ]
 
@@ -66,30 +67,16 @@ var countdown = function () {
     }, 1000);
 };
 
-// Add questions 
-// var askQuestions = function () {
-//     var i = 0;
-
-//     for (var i = 0; i < 6; i++) {
-//         var currentQuestion = questions[i];
-//         questionHeading.textContent = currentQuestion.question;
-//         console.log("this is " + currentQuestion.question);
-//         for (var questionIndex = 0; questionIndex < currentQuestion.answerChoices.length; questionIndex++) {
-//             var choices = currentQuestion.answerChoices[questionIndex];
-//             var choiceEl = document.createElement("li");
-//             choiceEl.innerText = choices;
-//             console.log(choices);
-//             answerChoiceList.appendChild(choiceEl);
-//         }
-//         answerChoiceList.addEventListener("click", checkAnswer);
-//     }
-// };
-
 var showQuestion = function () {
     questionHeading.textContent = questions[qIndex].question;
+    choiceA.textContent = questions[qIndex].answerChoices[0];
+    choiceB.textContent = questions[qIndex].answerChoices[1];
+    choiceC.textContent = questions[qIndex].answerChoices[2];
+    choiceD.textContent = questions[qIndex].answerChoices[3];
     answerChoiceList.addEventListener("click", checkAnswer);
+
     qIndex++
-}
+};
 
 var checkAnswer = function () {
     console.log("check");
