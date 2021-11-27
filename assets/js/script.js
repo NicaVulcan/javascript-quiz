@@ -5,44 +5,43 @@ var questionPageEl = document.querySelector("#question-page");
 var gameOverEl = document.querySelector("#game-over");
 var btnBeginQuiz = mainPageEl.querySelector("#begin");
 var questionHeading = questionPageEl.querySelector("#question");
-var answerChoiceList = questionPageEl.querySelector("#answer-choices");
-var choiceA = questionPageEl.querySelector("#choice-a")
-var choiceB = questionPageEl.querySelector("#choice-b")
-var choiceC = questionPageEl.querySelector("#choice-c")
-var choiceD = questionPageEl.querySelector("#choice-d")
+var answersEl = questionPageEl.querySelector("#answer-choices");
+var timeLeft = 60;
 var qIndex = 0;
+var score = 0;
+var savedScoresArr = [];
 
 // Questions array
 var questions = [
     {
         question: "What is the correct JavaScript syntax to write 'Hello World'?",
-        answerChoices: ["System.out.println('Hello World')", "println ('Hello World')", "document.write('Hello World')", "response.write('Hello World')"],
-        answerCorrect: 2
+        answerChoices: ["console.log('Hello World')", "alert('Hello World')", "document.write('Hello World')", "response.write('Hello World')"],
+        answerCorrect: "document.write('Hello World')"
     },
     {
         question: "Inside which HTML element do we put the JavaScript?",
         answerChoices: ["<js>", "<scripting>", "<javascript>", "<script>"],
-        answerCorrect: 3
+        answerCorrect: "<script>"
     },
     {
         question: "Which of the following best describes JavaScript?",
         answerChoices: ["an object-oriented scripting language.", "a low-level programming language.", "a scripting language precompiled in the browser.", "a compiled scripting language."],
-        answerCorrect: 0
+        answerCorrect: "an object-oriented scripting language."
     },
     {
         question: "Using _____ statements is how you test for specific conditions.",
         answerChoices: ["Select", "If", "Switch", "For"],
-        answerCorrect: 1
+        answerCorrect: "If"
     },
     {
         question: "What is meant by 'this' keyword in javascript?",
         answerChoices: ["It referes previous object", "It is variable which contains value", "It refers current object", "None of the above"],
-        answerCorrect: 2
+        answerCorrect: "It refers current object"
     },
     {
         question: "What would appear on the console if you were to type the following: 2 + 5 + '8'",
         answerChoices: ["78", "278", "7 + '8'", "15"],
-        answerCorrect: 0
+        answerCorrect: "78"
     },
 ]
 
@@ -52,37 +51,18 @@ gameOverEl.style.display = "none";
 
 // Countdown
 var countdown = function () {
-    var timeLeft = 10;
 
     var timeInterval = setInterval(function () {
         timerEl.textContent = "Time: " + timeLeft + "s";
         timeLeft--;
 
-        if (timeLeft == 0) {
-            timerEl.textContent = "game over!"
+        if (timeLeft === 0 || qIndex === questions.length) {
+            timerEl.textContent = "Time's Up"
             clearInterval(timeInterval);
-            // } else if(gameOver == true) {
-            //if all questions are answered, timer stops
+            gameOver();
         }
     }, 1000);
 };
-
-var showQuestion = function () {
-    questionHeading.textContent = questions[qIndex].question;
-    choiceA.textContent = questions[qIndex].answerChoices[0];
-    choiceB.textContent = questions[qIndex].answerChoices[1];
-    choiceC.textContent = questions[qIndex].answerChoices[2];
-    choiceD.textContent = questions[qIndex].answerChoices[3];
-    answerChoiceList.addEventListener("click", checkAnswer);
-
-    qIndex++
-};
-
-var checkAnswer = function () {
-    console.log("check");
-    showQuestion();
-};
-
 
 // Start Quiz
 var startQuiz = function () {
@@ -91,6 +71,58 @@ var startQuiz = function () {
 
     countdown();
     showQuestion();
+};
+
+// Show each question with respective answer choices
+var showQuestion = function () {
+
+    // Add question and respective answer choices text
+    questionHeading.textContent = questions[qIndex].question;
+
+    // Create element for each answer choice and append to answersEl div
+    for (var i = 0; i < 4; i++) {
+        var answerChoice = document.createElement("p");
+        answerChoice.textContent = questions[qIndex].answerChoices[i];
+        answerChoice.className = "answerChoice" + i;
+        answersEl.appendChild(answerChoice);
+    }
+
+    // Event listener for clicking on answer choices
+    answersEl.addEventListener("click", checkAnswer);
+};
+
+
+// Check answer and switch to next question
+var checkAnswer = function (event) {
+
+    // Check for correct answer
+    var chosenAnswer = event.target;
+    if (chosenAnswer.textContent === questions[qIndex].answerCorrect) {
+        score = score + 10;
+        console.log("Right! Your score is " + score);
+    } else {
+        timeLeft = timeLeft - 5;
+        console.log("Wrong! Your score is " + score);
+    }
+
+    // If questions remaining on index, remove answer choices and show next question and respective answer choices, otherwise end game
+    if (qIndex <= questions.length) {
+        while (answersEl.firstChild) {
+            answersEl.removeChild(answersEl.firstChild);
+        };
+        qIndex++
+        showQuestion();
+    } else {
+        gameOver();
+        return;
+    };
+};
+
+// Game over, save score
+var gameOver = function () {
+    questionPageEl.style.display = "none";
+    gameOverEl.style.display = "block";
+    
 };
 
 // Click 'begin' button starts quiz
