@@ -20,7 +20,8 @@
         <section id="start-quiz">
             <h1>JavaScript Quiz</h1>
             <p>
-                You have 60 seconds to answer 6 questions regarding JavaScript concepts. Earn 10 points for every correct answer. Any incorrect guesses will
+                You have 60 seconds to answer 6 questions regarding JavaScript concepts. Earn 10 points for every
+                correct answer. Any incorrect guesses will
                 detract 5 seconds from your remaining time. Good luck!
             </p>
             <button id="begin">BEGIN!</button>
@@ -45,6 +46,17 @@
                 <input type="text" name="initials" id="initials">
                 <button id="submit-score">Submit!</button>
             </form>
+        </section>
+        <section id="scoreboard">
+            <table id="score-table">
+                <thead>
+                    <tr>
+                        <th colspan="2">your previous scores:</th>
+                    </tr>
+                </thead>
+                <tbody id="score-table-body">
+                </tbody>
+            </table>
             <button id="try-again">Try Again!</button>
         </section>
     </main>

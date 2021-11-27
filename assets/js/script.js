@@ -1,4 +1,5 @@
 // Define global variables
+var timeInterval = "";
 var timerEl = document.querySelector("#timer");
 var mainPageEl = document.querySelector("#start-quiz");
 var questionPageEl = document.querySelector("#question-page");
@@ -7,7 +8,8 @@ var btnBeginQuiz = mainPageEl.querySelector("#begin");
 var questionHeading = questionPageEl.querySelector("#question");
 var answersEl = questionPageEl.querySelector("#answer-choices");
 var formEl = gameOverEl.querySelector("form");
-var btnTryAgain = gameOverEl.querySelector("#try-again");
+var scoreboardPageEl = document.querySelector("#scoreboard");
+var btnTryAgain = scoreboardPageEl.querySelector("#try-again");
 var timeLeft = 60;
 var qIndex = 0;
 var score = 0;
@@ -50,6 +52,7 @@ var questions = [
 // Only show main page 
 questionPageEl.style.display = "none";
 gameOverEl.style.display = "none";
+scoreboardPageEl.style.display = "none";
 
 // Start Quiz
 var startQuiz = function () {
@@ -65,13 +68,12 @@ var startQuiz = function () {
 // Countdown
 var countdown = function () {
 
-    var timeInterval = setInterval(function () {
+    timeInterval = setInterval(function () {
         timerEl.textContent = "Time: " + timeLeft + "s";
         timeLeft--;
 
-        if (timeLeft === 0 || qIndex === questions.length) {
-            timerEl.textContent = "Time's Up"
-            clearInterval(timeInterval);
+        if (timeLeft === 0) {
+            timerEl.textContent = "Time's Up";
             gameOver();
         }
     }, 1000);
@@ -107,13 +109,15 @@ var checkAnswer = function (event) {
         timeLeft = timeLeft - 5;
     }
 
+    qIndex++
+
     // If questions remaining on index, remove answer choices and show next question and respective answer choices, otherwise end game
-    if (qIndex <= questions.length) {
+    if (qIndex < questions.length) {
         while (answersEl.firstChild) {
             questionHeading.textContent = "";
             answersEl.removeChild(answersEl.firstChild);
         };
-        qIndex++
+
         showQuestion();
     } else {
         gameOver();
@@ -123,18 +127,24 @@ var checkAnswer = function (event) {
 
 // Game over, save score
 var gameOver = function () {
+    clearInterval(timeInterval);
+    timerEl.textContent = "";
     questionPageEl.style.display = "none";
     gameOverEl.style.display = "block";
     score = score + timeLeft;
-    console.log(score);
+
+    // Display current score
+    var displayScoreEl = gameOverEl.querySelector("#your-score");
+    displayScoreEl.textContent = "YOUR SCORE: " + score;
+
     return score;
 };
 
 // Save score
 var submitScore = function (event) {
     event.preventDefault();
+
     var initialsSave = gameOverEl.querySelector("#initials").value;
-    console.log(initialsSave);
 
     // Save initial and score pair as an object and push to savedScoresArr
     var scoreObj = {
@@ -145,6 +155,9 @@ var submitScore = function (event) {
 
     // Stringify array for local storage
     localStorage.setItem("score", JSON.stringify(savedScoresArr));
+
+    gameOverEl.style.display = "none";
+    scoreboardPageEl.style.display = "block";
 };
 
 // Retrieve score and display on scoreboard
@@ -154,6 +167,20 @@ var loadScore = function () {
         return false;
     }
     savedScoresArr = JSON.parse(scoreboard);
+
+    var scoreTableBody = scoreboardPageEl.querySelector("#score-table-body");
+
+    //create table row per each saved score object
+    for (var i = 0; i < savedScoresArr.length; i++) {
+        var scoreTableRow = document.createElement("tr");
+        scoreTableBody.appendChild(scoreTableRow);
+        var tableDataInitials = document.createElement("td");
+        var tableDataScore = document.createElement("td");
+        tableDataInitials.textContent = savedScoresArr[i].initial;
+        tableDataScore.textContent = savedScoresArr[i].score;
+        scoreTableRow.appendChild(tableDataScore);
+        scoreTableRow.appendChild(tableDataInitials);
+    }
 };
 
 // Restart game by refreshing page
