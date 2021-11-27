@@ -6,6 +6,8 @@ var gameOverEl = document.querySelector("#game-over");
 var btnBeginQuiz = mainPageEl.querySelector("#begin");
 var questionHeading = questionPageEl.querySelector("#question");
 var answersEl = questionPageEl.querySelector("#answer-choices");
+var formEl = gameOverEl.querySelector("form");
+var btnTryAgain = gameOverEl.querySelector("#try-again");
 var timeLeft = 60;
 var qIndex = 0;
 var score = 0;
@@ -49,6 +51,17 @@ var questions = [
 questionPageEl.style.display = "none";
 gameOverEl.style.display = "none";
 
+// Start Quiz
+var startQuiz = function () {
+
+    mainPageEl.style.display = "none";
+    questionPageEl.style.display = "block";
+
+    countdown();
+    showQuestion();
+};
+
+
 // Countdown
 var countdown = function () {
 
@@ -62,15 +75,6 @@ var countdown = function () {
             gameOver();
         }
     }, 1000);
-};
-
-// Start Quiz
-var startQuiz = function () {
-    mainPageEl.style.display = "none";
-    questionPageEl.style.display = "block";
-
-    countdown();
-    showQuestion();
 };
 
 // Show each question with respective answer choices
@@ -99,15 +103,14 @@ var checkAnswer = function (event) {
     var chosenAnswer = event.target;
     if (chosenAnswer.textContent === questions[qIndex].answerCorrect) {
         score = score + 10;
-        console.log("Right! Your score is " + score);
     } else {
         timeLeft = timeLeft - 5;
-        console.log("Wrong! Your score is " + score);
     }
 
     // If questions remaining on index, remove answer choices and show next question and respective answer choices, otherwise end game
     if (qIndex <= questions.length) {
         while (answersEl.firstChild) {
+            questionHeading.textContent = "";
             answersEl.removeChild(answersEl.firstChild);
         };
         qIndex++
@@ -122,8 +125,49 @@ var checkAnswer = function (event) {
 var gameOver = function () {
     questionPageEl.style.display = "none";
     gameOverEl.style.display = "block";
-    
+    score = score + timeLeft;
+    console.log(score);
+    return score;
 };
+
+// Save score
+var submitScore = function (event) {
+    event.preventDefault();
+    var initialsSave = gameOverEl.querySelector("#initials").value;
+    console.log(initialsSave);
+
+    // Save initial and score pair as an object and push to savedScoresArr
+    var scoreObj = {
+        initial: initialsSave,
+        score: score
+    }
+    savedScoresArr.push(scoreObj);
+
+    // Stringify array for local storage
+    localStorage.setItem("score", JSON.stringify(savedScoresArr));
+};
+
+// Retrieve score and display on scoreboard
+var loadScore = function () {
+    var scoreboard = localStorage.getItem("score");
+    if (!savedScoresArr) {
+        return false;
+    }
+    savedScoresArr = JSON.parse(scoreboard);
+};
+
+// Restart game by refreshing page
+var restart = function () {
+    document.location.reload(false);
+};
+
+loadScore();
 
 // Click 'begin' button starts quiz
 btnBeginQuiz.addEventListener("click", startQuiz);
+
+// Submit score
+formEl.addEventListener("submit", submitScore);
+
+// Try quiz again
+btnTryAgain.addEventListener("click", restart);
