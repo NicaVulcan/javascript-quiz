@@ -14,6 +14,7 @@ var timeLeft = 59;
 var qIndex = 0;
 var score = 0;
 var savedScoresArr = [];
+var scoreboard;
 
 // Questions array
 var questions = [
@@ -146,18 +147,25 @@ var submitScore = function (event) {
 
     var initialsSave = gameOverEl.querySelector("#initials").value;
 
+    scoreboard = JSON.parse(localStorage.getItem("score")) || [];
+    // savedScoresArr.push(scoreboard);
+    // console.log(savedScoresArr);
+
     // Save initial and score pair as an object and push to savedScoresArr
     var scoreObj = {
         initial: initialsSave,
         score: score
     };
-    savedScoresArr.push(scoreObj);
+    console.log(scoreObj);
+    scoreboard.push(scoreObj);
 
     // Stringify array for local storage
-    localStorage.setItem("score", JSON.stringify(savedScoresArr));
+    localStorage.setItem("score", JSON.stringify(scoreboard));
 
     gameOverEl.style.display = "none";
     scoreboardPageEl.style.display = "block";
+
+    loadScore();
 };
 
 // Retrieve score and display on scoreboard
@@ -166,23 +174,20 @@ var loadScore = function () {
         return false;
     }
 
-    var scoreboard = localStorage.getItem("score");
-    savedScoresArr = JSON.parse(scoreboard);
-
     var scoreTableBody = scoreboardPageEl.querySelector("#score-table-body");
+    scoreboard = JSON.parse(localStorage.getItem("score")) || [];
 
     //create table row per each saved score object
-    for (var i = 0; i < savedScoresArr.length; i++) {
+    for (var i = 0; i < scoreboard.length; i++) {
         var scoreTableRow = document.createElement("tr");
         scoreTableBody.appendChild(scoreTableRow);
         var tableDataInitials = document.createElement("td");
         var tableDataScore = document.createElement("td");
-        tableDataInitials.textContent = savedScoresArr[i].initial;
-        tableDataScore.textContent = savedScoresArr[i].score;
+        tableDataInitials.textContent = scoreboard[i].initial;
+        tableDataScore.textContent = scoreboard[i].score;
         scoreTableRow.appendChild(tableDataScore);
         scoreTableRow.appendChild(tableDataInitials);
     }
-
 };
 
 
@@ -190,8 +195,6 @@ var loadScore = function () {
 var restart = function () {
     document.location.reload(false);
 };
-
-loadScore();
 
 // Click 'begin' button starts quiz
 btnBeginQuiz.addEventListener("click", startQuiz);
