@@ -10,7 +10,7 @@ var answersEl = questionPageEl.querySelector("#answer-choices");
 var formEl = gameOverEl.querySelector("form");
 var scoreboardPageEl = document.querySelector("#scoreboard");
 var btnTryAgain = scoreboardPageEl.querySelector("#try-again");
-var timeLeft = 60;
+var timeLeft = 59;
 var qIndex = 0;
 var score = 0;
 var savedScoresArr = [];
@@ -29,8 +29,8 @@ var questions = [
     },
     {
         question: "Which of the following best describes JavaScript?",
-        answerChoices: ["an object-oriented scripting language.", "a low-level programming language.", "a scripting language precompiled in the browser.", "a compiled scripting language."],
-        answerCorrect: "an object-oriented scripting language."
+        answerChoices: ["An object-oriented scripting language.", "A low-level programming language.", "A scripting language precompiled in the browser.", "A compiled scripting language."],
+        answerCorrect: "An object-oriented scripting language."
     },
     {
         question: "Using _____ statements is how you test for specific conditions.",
@@ -38,9 +38,9 @@ var questions = [
         answerCorrect: "If"
     },
     {
-        question: "What is meant by 'this' keyword in javascript?",
-        answerChoices: ["It referes previous object", "It is variable which contains value", "It refers current object", "None of the above"],
-        answerCorrect: "It refers current object"
+        question: "What is meant by the keyword 'this' in javascript?",
+        answerChoices: ["It refers to the previous object", "It is a variable which contains value", "It refers to the current object", "None of the above"],
+        answerCorrect: "It refers to the current object"
     },
     {
         question: "What would appear on the console if you were to type the following: 2 + 5 + '8'",
@@ -89,7 +89,7 @@ var showQuestion = function () {
     for (var i = 0; i < 4; i++) {
         var answerChoice = document.createElement("p");
         answerChoice.textContent = questions[qIndex].answerChoices[i];
-        answerChoice.className = "answerChoice" + i;
+        answerChoice.className = "answer-choice";
         answersEl.appendChild(answerChoice);
     }
 
@@ -128,7 +128,7 @@ var checkAnswer = function (event) {
 // Game over, save score
 var gameOver = function () {
     clearInterval(timeInterval);
-    timerEl.textContent = "";
+    timerEl.textContent = "Good Job!";
     questionPageEl.style.display = "none";
     gameOverEl.style.display = "block";
     score = score + timeLeft;
@@ -150,7 +150,7 @@ var submitScore = function (event) {
     var scoreObj = {
         initial: initialsSave,
         score: score
-    }
+    };
     savedScoresArr.push(scoreObj);
 
     // Stringify array for local storage
@@ -162,10 +162,11 @@ var submitScore = function (event) {
 
 // Retrieve score and display on scoreboard
 var loadScore = function () {
-    var scoreboard = localStorage.getItem("score");
     if (!savedScoresArr) {
         return false;
     }
+
+    var scoreboard = localStorage.getItem("score");
     savedScoresArr = JSON.parse(scoreboard);
 
     var scoreTableBody = scoreboardPageEl.querySelector("#score-table-body");
@@ -181,7 +182,9 @@ var loadScore = function () {
         scoreTableRow.appendChild(tableDataScore);
         scoreTableRow.appendChild(tableDataInitials);
     }
+
 };
+
 
 // Restart game by refreshing page
 var restart = function () {

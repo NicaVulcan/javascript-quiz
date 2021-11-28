@@ -5,15 +5,18 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JavaScript Quiz</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@200;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
+    <title>JavaScript Quiz</title>
+
 </head>
 
 <body>
     <header>
-        <!-- insert link to high scores page -->
-        <a href="">View High Scores</a>
-        <p id="timer"></p>
+        <!-- timer -->
+        <p id="timer">Time: 60s</p>
     </header>
     <main>
         <!-- main page - start quiz prompt -->
@@ -49,9 +52,15 @@
         </section>
         <section id="scoreboard">
             <table id="score-table">
+                <h1>Your Previous Scores</h1>
                 <thead>
                     <tr>
-                        <th colspan="2">your previous scores:</th>
+                        <th>
+                            Score
+                        </th>
+                        <th>
+                            Initials
+                        </th>
                     </tr>
                 </thead>
                 <tbody id="score-table-body">
